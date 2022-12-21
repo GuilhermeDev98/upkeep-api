@@ -26,13 +26,13 @@ class VehicleController extends Controller
             return  response([
                 "message" => "Veículo Adicionado Com Sucesso!",
                 "data" => $vehicle,
-                "errors" => []
+                "errors" => null
             ], 201);
         }catch (Exception $e){
             return response([
                 "message" => 'Erro ao Adicionar Veículo!',
                 "data" => null,
-                "errors" => $e,
+                "errors" => $e->getMessage(),
             ], 404);
         }
     }
@@ -52,7 +52,7 @@ class VehicleController extends Controller
             return response([
                 "message" => 'Erro ao Atualizar Veículo!',
                 "data" => null,
-                "errors" => $e,
+                "errors" => $e->getMessage(),
             ], 404);
         }
     }
@@ -71,7 +71,7 @@ class VehicleController extends Controller
             return response([
                 "message" => 'Erro ao Deletar Veículo!',
                 "data" => null,
-                "errors" => $e,
+                "errors" => $e->getMessage(),
             ], 404);
         }
     }

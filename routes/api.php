@@ -25,4 +25,11 @@ Route::prefix('v1')->group(function () {
         Route::put('/{vehicle}', [App\Http\Controllers\VehicleController::class, 'update']);
         Route::delete('/{vehicle}', [App\Http\Controllers\VehicleController::class, 'delete']);
     });
+
+    Route::prefix('maintenances')->group(function () {
+        Route::get('/', [App\Http\Controllers\MaintenanceController::class, 'index']);
+        Route::post('/', [App\Http\Controllers\MaintenanceController::class, 'store']);
+        Route::put('/{maintenance}', [App\Http\Controllers\MaintenanceController::class, 'update']);
+        Route::delete('/{maintenance}', [App\Http\Controllers\MaintenanceController::class, 'delete']);
+    });
 });
