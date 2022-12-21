@@ -64,7 +64,7 @@ class VehicleController extends Controller
             return  response([
                 "message" => "Veículo Deletado Com Sucesso!",
                 "data" => null,
-                "errors" => []
+                "errors" => null
             ], 201);
 
         }catch (Exception $e){

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteMaintenanceRequest;
 use App\Http\Requests\StoreMaintenanceRequest;
 use App\Http\Requests\UpdateMaintenanceRequest;
 use App\Models\Maintenance;
@@ -70,7 +71,7 @@ class MaintenanceController extends Controller
             $maintenance->save();
 
             return  response([
-                "message" => "Manutenção Atualizado Com Sucesso!",
+                "message" => "Manutenção Atualizada Com Sucesso!",
                 "data" => $maintenance,
                 "errors" => null
             ], 200);
@@ -78,6 +79,25 @@ class MaintenanceController extends Controller
         }catch (Exception $e){
             return response([
                 "message" => 'Erro ao Atualizar Manutenção!',
+                "data" => null,
+                "errors" => $e->getMessage(),
+            ], 404);
+        }
+    }
+
+    public function delete(Maintenance $maintenance, DeleteMaintenanceRequest $request){
+        try {
+            $maintenance->delete();
+
+            return  response([
+                "message" => "Manutenção Deletada Com Sucesso!",
+                "data" => null,
+                "errors" => null
+            ], 201);
+
+        }catch (Exception $e){
+            return response([
+                "message" => 'Erro ao Deletar Manutenção!',
                 "data" => null,
                 "errors" => $e->getMessage(),
             ], 404);
