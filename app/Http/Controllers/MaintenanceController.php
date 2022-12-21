@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreMaintenanceRequest;
 use App\Models\Maintenance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 class MaintenanceController extends Controller
 {
     public function index(Request $request){
+        #TODO: remove commen
         //$user = auth()->user();
         try {
 
@@ -16,7 +18,7 @@ class MaintenanceController extends Controller
             $startDate = Carbon::today();
             $endDate = Carbon::today()->addDays($inTheNextDays);
 
-            $maintenances = Maintenance::whereBetween('date', [$startDate, $endDate])->get();
+            $maintenances = Maintenance::whereBetween('date', [$startDate, $endDate])->with(['vehicle', 'user'])->get();
 
             return response([
                 "message" => null,
@@ -28,6 +30,30 @@ class MaintenanceController extends Controller
         }catch (Exception $e){
             return response([
                 "message" => 'Erro ao Buscar Manutenções!',
+                "data" => null,
+                "errors" => $e->getMessage(),
+            ], 404);
+        }
+    }
+
+    public function store(StoreMaintenanceRequest $request){
+        try {
+            $request->replace([
+                'date' => Carbon::createFromFormat('d/m/Y', $request->date),
+                'user_id' => 1
+            ]);
+            $maintenance = Maintenance::create($request->all());
+
+            return response([
+                "message" => 'Manutenção Adicionada Com Sucesso!',
+                "data" => $maintenance,
+                "errors" => null,
+            ], 201);
+
+
+        }catch (Exception $e){
+            return response([
+                "message" => 'Erro ao Adicionar Manutenção!',
                 "data" => null,
                 "errors" => $e->getMessage(),
             ], 404);

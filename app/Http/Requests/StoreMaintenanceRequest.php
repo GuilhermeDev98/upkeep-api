@@ -13,7 +13,7 @@ class StoreMaintenanceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreMaintenanceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'date' => 'required|date_format:d/m/Y',
+            'reason' => 'required|max:250',
+            'vehicle_id' => 'required|exists:vehicles,id',
         ];
     }
 }
