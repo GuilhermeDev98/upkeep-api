@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMaintenanceRequest;
+use App\Http\Requests\UpdateMaintenanceRequest;
 use App\Models\Maintenance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -54,6 +55,29 @@ class MaintenanceController extends Controller
         }catch (Exception $e){
             return response([
                 "message" => 'Erro ao Adicionar Manutenção!',
+                "data" => null,
+                "errors" => $e->getMessage(),
+            ], 404);
+        }
+    }
+
+    public function update(Maintenance $maintenance, UpdateMaintenanceRequest $request){
+        try {
+            $newData = $request->replace([
+                'date' => Carbon::createFromFormat('d/m/Y', $request->date),
+            ]);
+            $maintenance->fill($newData->all());
+            $maintenance->save();
+
+            return  response([
+                "message" => "Manutenção Atualizado Com Sucesso!",
+                "data" => $maintenance,
+                "errors" => null
+            ], 200);
+
+        }catch (Exception $e){
+            return response([
+                "message" => 'Erro ao Atualizar Manutenção!',
                 "data" => null,
                 "errors" => $e->getMessage(),
             ], 404);
