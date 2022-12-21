@@ -24,8 +24,8 @@ class UpdateMaintenanceRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'required|date_format:d/m/Y',
-            'reason' => 'required|max:250'
+            'date' => 'date_format:d/m/Y',
+            'reason' => 'max:250'
         ];
     }
 }

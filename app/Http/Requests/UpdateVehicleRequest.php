@@ -28,10 +28,10 @@ class UpdateVehicleRequest extends FormRequest
     {
         return [
             'nickname' => 'max:50',
-            'brand' => 'required|max:50',
-            'model' => 'required|max:50',
-            'version' => 'required|max:50',
-            'type' => 'required|max:50'
+            'brand' => 'max:50',
+            'model' => 'max:50',
+            'version' => 'max:50',
+            'type' => 'max:50'
         ];
     }
 }
