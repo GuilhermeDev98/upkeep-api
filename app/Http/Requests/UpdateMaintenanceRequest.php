@@ -13,7 +13,10 @@ class UpdateMaintenanceRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if(auth()->user()->id == $this->maintenance->user_id){
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -28,8 +28,7 @@ class StoreVehicleRequest extends FormRequest
             'brand' => 'required|max:50',
             'model' => 'required|max:50',
             'version' => 'required|max:50',
-            'type' => 'required|max:50',
-            'user_id' => 'required|exists:users,id',
+            'type' => 'required|max:50'
         ];
     }
 }

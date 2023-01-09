@@ -14,15 +14,16 @@ use App\Models\User;
 class VehicleController extends Controller
 {
     public function index(Request $request){
-        //$vehicles = $request->user()->vehicles;
-        $user = User::where('email', 'guilhermedev@hotmail.com')->with('vehicles')->first();
+    
+    	$perPage = $request->query('perPage', '10');
 
-        return response()->json($user, 200);
+        $vehicles = Vehicle::where('user_id', auth()->user()->id)->paginate($perPage);
+        return response()->json($vehicles, 200);
     }
 
     public function store(StoreVehicleRequest $request){
         try {
-            $vehicle = Vehicle::create($request->all());
+            $vehicle = Vehicle::create($request->merge(['user_id' => auth()->user()->id])->all());
             return  response([
                 "message" => "Veículo Adicionado Com Sucesso!",
                 "data" => $vehicle,

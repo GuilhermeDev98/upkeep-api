@@ -12,15 +12,15 @@ use Illuminate\Http\Request;
 class MaintenanceController extends Controller
 {
     public function index(Request $request){
-        #TODO: remove commen
-        //$user = auth()->user();
         try {
 
             $inTheNextDays = $request->query('InTheNextDays', '7');
+            $perPage = $request->query('perPage', '10');
+            
             $startDate = Carbon::today();
             $endDate = Carbon::today()->addDays($inTheNextDays);
 
-            $maintenances = Maintenance::whereBetween('date', [$startDate, $endDate])->with(['vehicle', 'user'])->get();
+            $maintenances = Maintenance::whereBetween('date', [$startDate, $endDate])->where('user_id', auth()->user()->id)->with(['vehicle', 'user'])->paginate($perPage);
 
             return response([
                 "message" => null,
@@ -40,11 +40,8 @@ class MaintenanceController extends Controller
 
     public function store(StoreMaintenanceRequest $request){
         try {
-            $request->replace([
-                'date' => Carbon::createFromFormat('d/m/Y', $request->date),
-                'user_id' => 1
-            ]);
-            $maintenance = Maintenance::create($request->all());
+
+            $maintenance = Maintenance::create($request->merge(['user_id' => auth()->user()->id])->all());
 
             return response([
                 "message" => 'Manutenção Adicionada Com Sucesso!',
@@ -64,10 +61,7 @@ class MaintenanceController extends Controller
 
     public function update(Maintenance $maintenance, UpdateMaintenanceRequest $request){
         try {
-            $newData = $request->replace([
-                'date' => Carbon::createFromFormat('d/m/Y', $request->date),
-            ]);
-            $maintenance->fill($newData->all());
+            $maintenance->fill($request->all());
             $maintenance->save();
 
             return  response([

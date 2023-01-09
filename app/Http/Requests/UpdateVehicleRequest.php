@@ -13,10 +13,10 @@ class UpdateVehicleRequest extends FormRequest
      */
     public function authorize()
     {
-        /*if(auth()->user()->id == $this->$vehicle){
+        if(auth()->user()->id == $this->vehicle->user_id){
             return true;
-        }*/
-        return true;
+        }
+        return false;
     }
 
     /**

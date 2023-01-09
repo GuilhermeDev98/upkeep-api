@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteMaintenanceRequest extends FormRequest
+class AuthLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,10 +13,7 @@ class DeleteMaintenanceRequest extends FormRequest
      */
     public function authorize()
     {
-        if(auth()->user()->id == $this->maintenance->user_id){
-            return true;
-        }
-        return false;
+        return true;
     }
 
     /**
@@ -27,7 +24,8 @@ class DeleteMaintenanceRequest extends FormRequest
     public function rules()
     {
         return [
-            'maintenance' => 'exists:maintenances,id'
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required'
         ];
     }
 }

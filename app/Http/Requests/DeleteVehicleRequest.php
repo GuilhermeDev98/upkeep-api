@@ -13,11 +13,10 @@ class DeleteVehicleRequest extends FormRequest
      */
     public function authorize()
     {
-        #TODO: REMOVE COMMENT
-        /*if(auth()->user()->id == $this->$vehicle){
+        if(auth()->user()->id == $this->vehicle->user_id){
             return true;
-        }*/
-        return true;
+        }
+        return false;
     }
 
     /**
